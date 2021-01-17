@@ -1,21 +1,10 @@
 ;threading
 O<threading> sub
 
-#<_backup_metric> = #<_metric>
-#<_backup_absolute> = #<_absolute>
-#<_backup_feed> = #<_feed>
-#<_backup_ccomp> = #<_ccomp>
-#<_backup_tool_offset> = #<_tool_offset>
-#<_backup_coord_system> = #<_coord_system>
-#<_backup_ijk_abs_mode> = #<_ijk_absolute_mode>
-o1 if [#<_ini[DISPLAY]LATHE>]
-   #<_backup_lathe_diam_mode> = #<_lathe_diameter_mode>
-   #<_backup_lathe_mode> = 1
-o1 else
-   #<_backup_lathe_mode> = 0
-o1 endif
+o<backup_status> call
 
 G8  ; Lathe radius Mode
+G18 ; XZ Plane
 G90 ; Absolute Distance
 
 #<X_coord>     = #<X_coord>
@@ -27,8 +16,7 @@ G90 ; Absolute Distance
 #<exterior>    = #<exterior>
 #<coolant>     = #<coolant>
 
-;M6 T#<tool_number> G43
-        O100 if [#<coolant> NE #<_current_tool>]
+        O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
              o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
@@ -73,7 +61,7 @@ G95 F#<flatfeed> ; Feed-Per-Rev Mode
             G96 D600 S#<feed_rpm> ; limit RPM in threading mode
             G76 P#<pitch> Z#<Z_coord> i#<minorflat> j#<cutdepth> k#<threaddepth> H3 R1.5 Q29.5 E0 L0
             G0 X [#<X_coord> - 0.5]
-        O3001 else ;external
+        O301 else ;external
             ; cut the major diameter
             ;(DEBUG,EXTERNAL Threading thread dia-#<X_coord> startZ-#<starting_Z> finishZ-#<Z_coord> Pitch-#<pitch> Tool-#<tool_number> MF #<majorflat>)
             G0 Z #<starting_Z>

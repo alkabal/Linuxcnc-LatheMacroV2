@@ -1,21 +1,11 @@
 ;radius
 O<radius> sub
 
-#<_backup_metric> = #<_metric>
-#<_backup_absolute> = #<_absolute>
-#<_backup_feed> = #<_feed>
-#<_backup_ccomp> = #<_ccomp>
-#<_backup_tool_offset> = #<_tool_offset>
-#<_backup_coord_system> = #<_coord_system>
-#<_backup_ijk_abs_mode> = #<_ijk_absolute_mode>
-o1 if [#<_ini[DISPLAY]LATHE>]
-   #<_backup_lathe_diam_mode> = #<_lathe_diameter_mode>
-   #<_backup_lathe_mode> = 1
-o1 else
-   #<_backup_lathe_mode> = 0
-o1 endif
+o<backup_status> call
 
 G7  ; Lathe diameter mode
+G18 ; XZ Plane
+G21 ; Metric Units
 G90 ; Absolute Distance
 
 #<X_coord>        = #1

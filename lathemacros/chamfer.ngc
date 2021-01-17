@@ -1,21 +1,11 @@
 ;chamfer
 O<chamfer> sub
 
-#<_backup_metric> = #<_metric>
-#<_backup_absolute> = #<_absolute>
-#<_backup_feed> = #<_feed>
-#<_backup_ccomp> = #<_ccomp>
-#<_backup_tool_offset> = #<_tool_offset>
-#<_backup_coord_system> = #<_coord_system>
-#<_backup_ijk_abs_mode> = #<_ijk_absolute_mode>
-o1 if [#<_ini[DISPLAY]LATHE>]
-   #<_backup_lathe_diam_mode> = #<_lathe_diameter_mode>
-   #<_backup_lathe_mode> = 1
-o1 else
-   #<_backup_lathe_mode> = 0
-o1 endif
+o<backup_status> call
 
 G8  ; Lathe radius Mode
+G18 ; XZ Plane
+G21 ; Metric Units
 G90 ; Absolute Distance
 
 #<X_coord>        = #1
@@ -31,7 +21,6 @@ G90 ; Absolute Distance
 #<exterior_rear>  = #11
 #<coolant>        = #12
 
-;M6 T#<tool_number> G43
         O100 if [#<tool_number>  NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
              o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
@@ -42,7 +31,7 @@ G90 ; Absolute Distance
 #<starting_X> = #<_x> (starting X)
 #<starting_Z> = #<_z> (starting Z)
 
-G96 D2500 S#2 ; Constant Surface Speed Mode
+G96 D1500 S#2 ; Constant Surface Speed Mode
 M3            ; Start Spindle
 G95 F0.1      ; Feed-Per-Rev Mode
 G4P1          ; Wait to reach speed

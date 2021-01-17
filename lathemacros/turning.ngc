@@ -1,21 +1,11 @@
 ;Turning
 O<turning> sub
 
-#<_backup_metric> = #<_metric>
-#<_backup_absolute> = #<_absolute>
-#<_backup_feed> = #<_feed>
-#<_backup_ccomp> = #<_ccomp>
-#<_backup_tool_offset> = #<_tool_offset>
-#<_backup_coord_system> = #<_coord_system>
-#<_backup_ijk_abs_mode> = #<_ijk_absolute_mode>
-o1 if [#<_ini[DISPLAY]LATHE>]
-   #<_backup_lathe_diam_mode> = #<_lathe_diameter_mode>
-   #<_backup_lathe_mode> = 1
-o1 else
-   #<_backup_lathe_mode> = 0
-o1 endif
+o<backup_status> call
 
-G8    ; Lathe radius Mode
+G8 ; Radius mode (easier maths)
+G18 ; XZ Plane
+G21 ; Metric Units                 ; it is really not possible to use imperial ?
 G90   ; Absolute Distance
 G91.1 ; but not for arcs
 
@@ -29,7 +19,6 @@ G91.1 ; but not for arcs
 #<tool_number>   = #8
 #<coolant>       = #9
 
-;M6 T#<tool_number> G43
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
              o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
@@ -51,13 +40,13 @@ M3                ; Start Spindle
 G95 F#<feed_rpm>  ; Feed-Per-Rev Mode
 G4P1              ; Wait to reach speed
 
-        O110 if [#<coolant>]
+        o110 if [#<coolant>]
                 M8
-        O110 endif
+        o110 endif
 
 (DEBUG,Turning finish rad-#<X_coord> start rad-#<starting_X> start length-#<starting_Z> finish length-#<Z_coord>)
 
-        O200 while [#<starting_X> GT [#<X_coord> + #<cut_size> / 2]]
+        o200 while [#<starting_X> GT [#<X_coord> + #<cut_size> / 2]]
              G0 X #<starting_X>
              #<starting_X>=[#<starting_X>-#<cut_size> / 2]
              G1 X #<starting_X>
@@ -75,17 +64,17 @@ G4P1              ; Wait to reach speed
              o202 endif
 
              G0 Z[#<starting_Z>]
-        O200 endwhile
+        o200 endwhile
 
         G0 X#<X_coord>
         G1 Z #23 X[#<X_coord> + #24]
 
-        O300 if [#<radius> GT 0]
+        o300 if [#<radius> GT 0]
              G2 Z#<Z_coord> X[#<X_coord> + #24 + #21] I#21 K#20
              G1 X[#<X_coord> + #24 + #21 + #<cut_size>]
-        O300 else
+        o300 else
              G1 X[#<X_coord> + #24 + #<cut_size>]
-        O300 endif
+        o300 endif
 
         O400 IF  [#<angles> LT 0]
              G0 X#<starting_X>
