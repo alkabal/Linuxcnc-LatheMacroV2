@@ -1,7 +1,7 @@
 ;Facing
-O<facing> sub
+o<facing> sub
 
-O<backup_status> call
+o<backup_status> call
 
 G7  ; diameter mode
 G18 ; XZ Plane
@@ -23,7 +23,7 @@ G90 ; Absolute Distance
 
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             O<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+             o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
 
@@ -59,9 +59,9 @@ G4P1              ; Wait to reach speed
 M5
 M9
 
-  O<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+  o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
 
-O<facing> endsub
+o<facing> endsub
 
 M2
 %

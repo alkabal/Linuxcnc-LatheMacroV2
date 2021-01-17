@@ -1,7 +1,7 @@
 ; backup_restore metric/inch absolute/relative, feed as per paramter values
-; call as O<backup_restore> call     ; backup_restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+; call as o<backup_restore> call     ; backup_restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
 ;
-O<backup_restore> sub
+o<backup_restore> sub
 
 ;ajout pour remplacer le reset state lathe completement mais TODO a convertir en _backup_var
 G64P0.001 G97 G99 M5 M9
@@ -144,5 +144,5 @@ o110 endif
 
 
 
-O<backup_restore> endsub
+o<backup_restore> endsub
 M2
