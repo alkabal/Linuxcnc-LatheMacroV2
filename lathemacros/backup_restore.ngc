@@ -2,25 +2,26 @@
 ; call as o<backup_restore> call     ; backup_restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
 ;
 o<backup_restore> sub
-
-;ajout pour remplacer le reset state lathe completement mais TODO a convertir en _backup_var
+;
+;RS274NGC_STARTUP_CODE = G7 G18 G21 G40 G49 G54 G64 P0.001 G80 G90 G90.1 G92.1 G94 G97 G99 M5 M9 M53
+;for a complete restore according to what is configured in my ini
 G64P0.001 G97 G99 M5 M9
 
 o10 if [#<_backup_metric> NE #<_metric>]
- o11    if [#<_backup_metric>]
-         G21
- o11    else
-         G20
- o11    endif
+ o11 if [#<_backup_metric>]
+     G21
+ o11 else
+     G20
+ o11 endif
 o10 endif
 
 
 o20 if [#<_backup_absolute> NE #<_absolute>]
- o21    if [#<_backup_absolute>]
-        G90
- o21    else
-        G91
- o21    endif
+ o21 if [#<_backup_absolute>]
+     G90
+ o21 else
+     G91
+ o21 endif
 o20 endif
 
 
@@ -81,26 +82,23 @@ o60 endif
 
 
 o70 if [#<_backup_ijk_abs_mode> NE #<_ijk_absolute_mode>]
-     o71    if [#<_backup_ijk_abs_mode>]
-             G90.1
-     o71    else
-             G91.1
-     o71    endif
+     o71 if [#<_backup_ijk_abs_mode>]
+         G90.1
+     o71 else
+         G91.1
+     o71 endif
 o70 endif
 
 
-o80 if [#<_backup_lathe_mode>}
+;o80 if [#<_backup_lathe_mode>}
      o81 if [#<_backup_lathe_diam_mode> NE #<_lathe_diameter_mode>]
           o82    if [#<_backup_lathe_diam_mode>]
                   G7  (lathe diameter mode)
           o82    else
                   G8
           o82    endif
-          G18 (select lathe XZ plane)
      o81 endif
-o80 else
-     G17 (select mill XY plane)
-o80 endif
+;o80 endif
 
 
 o90 if [#<_backup_plane> NE #<_plane>]
@@ -136,13 +134,6 @@ o110 if [#<_backup_retract_old_z> NE #<_retract_old_z>]
        G98
  o111  endif
 o110 endif
-
-
-
-
-
-
-
 
 o<backup_restore> endsub
 M2
