@@ -2,6 +2,8 @@
 
 Fork from Andypugh original verion
 
+Usefull macro for Linuxcnc Lathe.
+
 This is a update version for now only as beta.
 
 Your welcome for participating.
