@@ -1,0 +1,87 @@
+;boring
+O<boring> sub
+
+o<backup_status> call
+
+G8    ; Lathe radius Mode
+G18 ; XZ Plane
+G21 ; Metric Units
+G90   ; Absolute Distance
+G91.1 ; but not for arcs
+
+
+#<X_coord>       = #1
+#<surface_speed> = #2
+#<cut_size>      = #3
+#<feed_rpm>      = #4
+#<Z_coord>       = #5
+#<radius>        = #6
+#<angles>        = #7
+#<tool_number>   = #8
+#<coolant>       = #9
+
+        O100 if [#<tool_number> NE #<_current_tool>]
+             (MSG,ERROR : Set tool before use macro)
+             o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+        O100 return [-2] ; indicate failure to epilog
+        O100 endif
+
+#<X_coord> = [#<X_coord> / 2] ; because of radius mode
+#<starting_X> = [#<_x>] (startinG X)
+#<starting_Z> = #<_z> (startinG Z)
+
+#20 = [#<radius> * SIN[#<angles>]]
+#21 = [-#<radius> * COS[#<angles>]]
+#22 = [#<radius> / COS[#<angles>]]
+#23 = [#<Z_coord> + #<radius> - #20]
+#24 = [[#23 - #<starting_Z>] * TAN[#<angles>]]
+
+G96 D2500 S#<surface_speed> ; Constant Surface Speed Mode
+M3            ; Start Spindle
+G95 F#<feed_rpm>       ; Feed-Per-Rev Mode
+G4P1          ; Wait to reach speed
+
+        O110 if [#<coolant>]
+                M8
+        O110 endif
+
+(DEBUG,Turning finish dia-#<X_coord> start rad-#<starting_X> start length-#<starting_Z> finish length-#<Z_coord>)
+
+        O200 while [#<starting_X> LT [#<X_coord> - #<cut_size>]]
+             G0 X #<starting_X>
+             #<starting_X>=[#<starting_X> + #<cut_size>]
+             G1 X #<starting_X>
+             G1 Z #23 X[#<starting_X> + #24]
+
+             o201 if [#<radius> GT 0]
+                  G3 Z#<Z_coord> X[#<starting_X> + #24 + #21] I#21 K#20
+                  G1 X[#<starting_X> + #24 + #21 - #<cut_size>]
+             o201 else
+                  G1 X[#<starting_X> + #24 - [#<cut_size> * 1.5]]
+             o201 endif
+
+             G0 Z[#<starting_Z>]
+        O200 endwhile
+
+        G0 X#<X_coord>
+        G1 Z#23 X[#<X_coord> + #24]
+
+        O300 if [#<radius> GT 0]
+             G3 Z#<Z_coord> X[#<X_coord> + #24 + #21] I#21 K#20
+             G1 X[#<X_coord> + #24 + #21 - #<cut_size>]
+        O300 else
+             G1 X[#<X_coord> + #24 - #<cut_size>]
+        O300 endif
+
+        G0 Z#<starting_Z>
+        G0 X#<X_coord> ; For touch-off
+
+M5
+M9
+
+  o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+
+O<boring> endsub
+
+M2
+%
