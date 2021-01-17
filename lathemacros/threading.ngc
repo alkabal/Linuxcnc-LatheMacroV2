@@ -1,7 +1,7 @@
 ;threading
 O<threading> sub
 
-o<backup_status> call
+O<backup_status> call
 
 G8  ; Lathe radius Mode
 G18 ; XZ Plane
@@ -18,7 +18,7 @@ G90 ; Absolute Distance
 
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+             O<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
 
@@ -80,7 +80,7 @@ G95 F#<flatfeed> ; Feed-Per-Rev Mode
 M5
 M9
 
-  o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+  O<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
 
 O<threading> endsub
 

@@ -1,4 +1,4 @@
-o<backup_status> sub
+O<backup_status> sub
 
 #<_backup_retract_old_z> = #<_retract_old_z
 #<_backup_units_per_min> = #<_units_per_minute>
@@ -19,4 +19,4 @@ o1 endif
 
 M0
 
-o<backup_status> endsub
+O<backup_status> endsub

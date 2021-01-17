@@ -1,21 +1,11 @@
 ;boring
 O<boring> sub
 
-#<_backup_metric> = #<_metric>
-#<_backup_absolute> = #<_absolute>
-#<_backup_feed> = #<_feed>
-#<_backup_ccomp> = #<_ccomp>
-#<_backup_tool_offset> = #<_tool_offset>
-#<_backup_coord_system> = #<_coord_system>
-#<_backup_ijk_abs_mode> = #<_ijk_absolute_mode>
-o1 if [#<_ini[DISPLAY]LATHE>]
-   #<_backup_lathe_diam_mode> = #<_lathe_diameter_mode>
-   #<_backup_lathe_mode> = 1
-o1 else
-   #<_backup_lathe_mode> = 0
-o1 endif
+O<backup_status> call
 
 G8    ; Lathe radius Mode
+G18 ; XZ Plane
+G21 ; Metric Units
 G90   ; Absolute Distance
 G91.1 ; but not for arcs
 
@@ -30,10 +20,9 @@ G91.1 ; but not for arcs
 #<tool_number>   = #8
 #<coolant>       = #9
 
-;M6 T#<tool_number> G43
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+             O<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
 
@@ -60,7 +49,7 @@ G4P1          ; Wait to reach speed
 
         O200 while [#<starting_X> LT [#<X_coord> - #<cut_size>]]
              G0 X #<starting_X>
-#<starting_X>=[#<starting_X> + #<cut_size>]
+             #<starting_X>=[#<starting_X> + #<cut_size>]
              G1 X #<starting_X>
              G1 Z #23 X[#<starting_X> + #24]
 
@@ -90,7 +79,7 @@ G4P1          ; Wait to reach speed
 M5
 M9
 
-  o<restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+  O<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
 
 O<boring> endsub
 
