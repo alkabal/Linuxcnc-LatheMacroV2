@@ -7,14 +7,14 @@ G8  ; Lathe radius Mode
 G18 ; XZ Plane
 G90 ; Absolute Distance
 
-#<X_coord>     = #<X_coord>
-#<feed_rpm>    = #<feed_rpm>
-#<tool_number> = #<tool_number>
-#<pitch>       = #<pitch>
-#<Z_coord>     = #<Z_coord>
-#<interior>    = #<interior>
-#<exterior>    = #<exterior>
-#<coolant>     = #<coolant>
+#<X_coord>     = #1
+#<feed_rpm>    = #2
+#<tool_number> = #3
+#<pitch>       = #4
+#<Z_coord>     = #5
+#<interior>    = #6
+#<exterior>    = #7
+#<coolant>     = #8
 
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
