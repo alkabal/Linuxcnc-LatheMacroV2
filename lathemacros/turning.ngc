@@ -15,7 +15,6 @@ o<backup_status> call
 
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             ;o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
 
