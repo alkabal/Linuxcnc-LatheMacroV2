@@ -3,11 +3,6 @@ o<radius> sub
 
 o<backup_status> call
 
-G7  ; Lathe diameter mode
-G18 ; XZ Plane
-G21 ; Metric Units
-G90 ; Absolute Distance
-
 #<X_coord>        = #1
 #<feed_rpm>       = #2
 #<half>           = #3 ;0.5 ?
@@ -24,9 +19,14 @@ G90 ; Absolute Distance
 ;M6 T#<tool_number> G43
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+             ;o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
+
+G7  ; Lathe diameter mode
+G18 ; XZ Plane
+G21 ; Metric Units
+G90 ; Absolute Distance
 
 #<X_coord> = [#<X_coord> / 2] ; because of radius mode
 #<starting_X> = #<_x> (starting X)

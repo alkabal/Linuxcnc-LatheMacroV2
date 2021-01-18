@@ -3,11 +3,6 @@ o<drill> sub
 
 o<backup_status> call
 
-G7  ; diameter mode
-G18 ; XZ Plane
-G21 ; Metric Units
-G90 ; Absolute Distance
-
 #<drill_diam>     = #1
 #<Y_depth>        = #2
 #<speed>          = #3
@@ -21,9 +16,14 @@ G90 ; Absolute Distance
 
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+             ;o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
+
+G7  ; diameter mode
+G18 ; XZ Plane
+G21 ; Metric Units
+G90 ; Absolute Distance
 
 #<speed_calc> = [[1000 * #<speed>] / [3.1415 * #<drill_diam>]] ; metric mode RPM
 

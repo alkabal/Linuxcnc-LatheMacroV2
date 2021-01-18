@@ -3,12 +3,6 @@ o<turning> sub
 
 o<backup_status> call
 
-G8 ; Radius mode (easier maths)
-G18 ; XZ Plane
-G21 ; Metric Units                 ; it is really not possible to use imperial ?
-G90   ; Absolute Distance
-G91.1 ; but not for arcs
-
 #<X_coord>       = #1
 #<surface_speed> = #2
 #<cut_size>      = #3
@@ -21,9 +15,15 @@ G91.1 ; but not for arcs
 
         O100 if [#<tool_number> NE #<_current_tool>]
              (MSG,ERROR : Set tool before use macro)
-             o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
+             ;o<backup_restore> call     ; restore g20/21, g90/g91, feedrate cuter-comp and other using now global _backup_var
         O100 return [-2] ; indicate failure to epilog
         O100 endif
+
+G8 ; Radius mode (easier maths)
+G18 ; XZ Plane
+G21 ; Metric Units                 ; it is really not possible to use imperial ?
+G90   ; Absolute Distance
+G91.1 ; but not for arcs
 
 #<X_coord> = [#<X_coord> / 2] ; because of radius mode
 #<starting_X> = #<_x> (starting X)
