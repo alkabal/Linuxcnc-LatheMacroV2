@@ -2,6 +2,7 @@
 o<drill> sub
 
   o<backup_status> call
+  o<clear-axis-notif> call
 
 #<drill_diam>     = #1
 #<Y_depth>        = #2

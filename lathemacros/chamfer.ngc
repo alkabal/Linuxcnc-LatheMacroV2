@@ -2,6 +2,7 @@
 o<chamfer> sub
 
   o<backup_status> call
+  o<clear-axis-notif> call
 
 #<X_coord>        = #1
 #<feed_rpm>       = #2
