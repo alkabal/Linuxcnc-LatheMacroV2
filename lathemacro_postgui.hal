@@ -1,0 +1,3 @@
+## For use clear axis notification You also need to add this or for general use add a POSTGUI_HALFILE file or add this is your postgui.hal
+net clear-axis-message <= motion.digital-out-00
+net clear-axis-message => axisui.notifications-clear-info
