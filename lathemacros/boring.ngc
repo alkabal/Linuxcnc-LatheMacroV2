@@ -1,8 +1,7 @@
 ;boring
 o<boring> sub
 
-o<backup_status> call
-
+  o<backup_status> call
 
 #<X_coord>       = #1
 #<surface_speed> = #2

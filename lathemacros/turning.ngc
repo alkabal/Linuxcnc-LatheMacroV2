@@ -1,7 +1,7 @@
 ;Turning
 o<turning> sub
 
-o<backup_status> call
+  o<backup_status> call
 
 #<X_coord>       = #1
 #<surface_speed> = #2
@@ -34,7 +34,7 @@ G91.1 ; but not for arcs
 #23 = [#<Z_coord> + #<radius> - #20]
 #24 = [[#<starting_Z> - #23] * TAN[#<angles>]]
 
-G96 D2500 S#<surface_speed> ; Constant Surface Speed Mode
+G96 D1500 S#<surface_speed> ; Constant Surface Speed Mode
 M3                ; Start Spindle
 G95 F#<feed_rpm>  ; Feed-Per-Rev Mode
 G4P1              ; Wait to reach speed
@@ -46,10 +46,10 @@ G4P1              ; Wait to reach speed
 (DEBUG,Turning finish rad-#<X_coord> start rad-#<starting_X> start length-#<starting_Z> finish length-#<Z_coord>)
 
         o200 while [#<starting_X> GT [#<X_coord> + #<cut_size> / 2]]
-             G0 X #<starting_X>
+             G0 X#<starting_X>
              #<starting_X>=[#<starting_X>-#<cut_size> / 2]
-             G1 X #<starting_X>
-             G1 Z #23 X[#<starting_X> + #24]
+             G1 X#<starting_X>
+             G1 Z#23 X[#<starting_X> + #24]
 
              o201 if [#<radius> GT 0]
                   G2 Z#<Z_coord> X[#<starting_X> + #24 + #21] I#21 K#20
@@ -75,7 +75,7 @@ G4P1              ; Wait to reach speed
              G1 X[#<X_coord> + #24 + #<cut_size>]
         o300 endif
 
-        O400 IF  [#<angles> LT 0]
+        O400 IF [#<angles> LT 0]
              G0 X#<starting_X>
         O400 endif
 

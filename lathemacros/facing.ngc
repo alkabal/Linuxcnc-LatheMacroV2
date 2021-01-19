@@ -1,7 +1,7 @@
 ;Facing
 o<facing> sub
 
-o<backup_status> call
+  o<backup_status> call
 
 #<X_coord>       = #1
 #<surface_speed> = #2
@@ -14,6 +14,7 @@ o<backup_status> call
 
         O10 if [#<angles> NE 0]
            (MSG,Angled facing isn't supported yet)
+        O10 return [-2] ; indicate failure to epilog
         O10 endif
 
         O100 if [#<tool_number> NE #<_current_tool>]
