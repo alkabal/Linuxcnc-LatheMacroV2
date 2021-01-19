@@ -150,9 +150,6 @@ o1 else
 
     ; o1 if [#<_ini[DISPLAY]LATHE> EQ 1]
     ;    G7  (lathe diameter mode)
-    ;    G18 (select lathe XZ plane)
-    ; o1 else
-    ;    G17 (select mill XY plane)
     ; o1 endif
 
     G21 (metric)
